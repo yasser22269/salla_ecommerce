@@ -1,0 +1,205 @@
+1- vendors table:
+
+id (int, primary key)
+name (string)
+email (string, unique)
+password (string)
+created_at (timestamp)
+updated_at (timestamp)
+
+2 -vendor_products table:
+
+id (int, primary key)
+vendor_id (int, foreign key referencing vendors table)
+product_id (int, foreign key referencing products table)
+created_at (timestamp)
+updated_at (timestamp)
+
+3- users table:
+
+id (int, primary key)
+name (string)
+email (string, unique)
+password (string)
+role (string)
+vendor_id (int, foreign key referencing vendors table, nullable)
+created_at (timestamp)
+updated_at (timestamp)
+
+4- products table:
+
+id (int, primary key)
+name (string)
+description (text)
+price (decimal)
+quantity_available (int)
+created_at (timestamp)
+updated_at (timestamp)
+
+5- categories table:
+
+id (int, primary key)
+name (string)
+created_at (timestamp)
+updated_at (timestamp)
+
+6- orders table:
+
+id (int, primary key)
+user_id (int, foreign key referencing users table)
+total_amount (decimal)
+status (string)
+created_at (timestamp)
+updated_at (timestamp)
+
+7-carts table:
+
+id (int, primary key)
+user_id (int, foreign key referencing users table)
+created_at (timestamp)
+updated_at (timestamp)
+
+8-cart_items table:
+
+id (int, primary key)
+cart_id (int, foreign key referencing carts table)
+product_id (int, foreign key referencing products table)
+quantity (int)
+created_at (timestamp)
+updated_at (timestamp)
+
+9-payments table:
+
+id (int, primary key)
+user_id (int, foreign key referencing users table)
+order_id (int, foreign key referencing orders table)
+amount (decimal)
+payment_status (string)
+created_at (timestamp)
+updated_at (timestamp)
+
+10-reviews table:
+
+id (int, primary key)
+user_id (int, foreign key referencing users table)
+product_id (int, foreign key referencing products table)
+rating (int)
+comment (text)
+created_at (timestamp)
+updated_at (timestamp)
+
+11-coupons table:
+
+id (int, primary key)
+code (string)
+discount_percentage (decimal)
+validity_period (timestamp)
+created_at (timestamp)
+updated_at (timestamp)
+
+12-addresses table:
+
+id (int, primary key)
+user_id (int, foreign key referencing users table)
+address_line1 (string)
+address_line2 (string)
+city (string)
+zip_code (string)
+created_at (timestamp)
+updated_at (timestamp)
+
+13-shipping table:
+
+id (int, primary key)
+order_id (int, foreign key referencing orders table)
+tracking_number (string)
+shipping_status (string)
+created_at (timestamp)
+updated_at (timestamp)
+
+14-images table:
+
+id (int, primary key)
+filename (string)
+caption (string)
+path (string)
+imageable_type (string)
+imageable_id (bigint)
+created_at (timestamp)
+updated_at (timestamp)
+
+15-wishlists table:
+
+id (int, primary key)
+user_id (int, foreign key referencing users table)
+product_id (int, foreign key referencing products table)
+created_at (timestamp)
+updated_at (timestamp)
+
+16-notifications table:
+
+id (int, primary key)
+user_id (int, foreign key referencing users table)
+content (text)
+status (string)
+created_at (timestamp)
+updated_at (timestamp)
+
+17-returnProducts table:
+
+id (int, primary key)
+order_id (int, foreign key referencing orders table)
+reason (text)
+status (string)
+created_at (timestamp)
+updated_at (timestamp)
+
+18-analytics table:
+
+id (int, primary key)
+page_views (int)
+unique_visitors (int)
+sales (decimal)
+conversion_rate (float)
+created_at (timestamp)
+updated_at (timestamp)
+
+19-discounts table:
+
+id (int, primary key)
+product_id (int, foreign key referencing products table)
+discount_percentage (decimal)
+start_date (timestamp)
+end_date (timestamp)
+created_at (timestamp)
+updated_at (timestamp)
+
+20-subscriptions table:
+
+id (int, primary key)
+user_id (int, foreign key referencing users table)
+plan (string)
+billing_cycle (string)
+subscription_status (string)
+created_at (timestamp)
+updated_at (timestamp)
+
+21-faqs table:
+
+id (int, primary key)
+question (text)
+answer (text)
+created_at (timestamp)
+updated_at (timestamp)
+
+22- OrderItem table :
+
+id (int, primary key)
+order_id (int, foreign key referencing orders table)
+product_id (int, foreign key referencing products table)
+product_name (string)
+price (decimal)
+quantity (integer)
+subtotal (decimal)
+created_at (timestamp)
+updated_at (timestamp)
