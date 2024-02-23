@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\FAQ;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -9,15 +10,13 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class FAQFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
-    public function definition(): array
+    protected $model = FAQ::class;
+
+    public function definition()
     {
         return [
-            //
+            'question' => $this->faker->sentence,
+            'answer' => $this->faker->paragraph,
         ];
     }
 }

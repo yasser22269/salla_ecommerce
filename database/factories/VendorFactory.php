@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Vendor;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -14,10 +15,14 @@ class VendorFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition(): array
+    protected $model = Vendor::class;
+
+    public function definition()
     {
         return [
-            //
+            'name' => $this->faker->company,
+            'email' => $this->faker->unique()->safeEmail,
+            'password' => bcrypt('password'),
         ];
     }
 }

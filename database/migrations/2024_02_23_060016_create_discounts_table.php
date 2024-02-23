@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('product_id')->constrained();
             $table->decimal('discount_percentage', 5, 2);
             $table->timestamp('start_date');
-            $table->timestamp('end_date');
+            $table->timestamp('end_date')->nullable();
             $table->timestamps();
         });
     }

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Address;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -9,15 +10,16 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class AddressFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
-    public function definition(): array
+    protected $model = Address::class;
+
+    public function definition()
     {
         return [
-            //
+            'user_id' => \App\Models\User::factory(),
+            'address_line1' => $this->faker->streetAddress,
+            'address_line2' => $this->faker->secondaryAddress,
+            'city' => $this->faker->city,
+            'zip_code' => $this->faker->postcode,
         ];
     }
 }
