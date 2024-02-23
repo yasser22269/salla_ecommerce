@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Image;
+use App\Models\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -12,11 +13,15 @@ class ImageFactory extends Factory
 {
     protected $model = Image::class;
 
-    public function definition()
+    public function definition(): array
     {
         return [
-            'product_id' => \App\Models\Product::factory(),
-            'image_url' => $this->faker->imageUrl(),
+            'filename' => $this->faker->word . '.jpg',
+            'caption' => $this->faker->sentence,
+            'path' => 'images',
+            'imageable_type' => Product::class,
+            'imageable_id' => Product::factory(), // You can also use an existing Post ID here
+
         ];
     }
 }
