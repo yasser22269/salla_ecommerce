@@ -36,9 +36,4 @@ class Address extends Model
         return $query->where('city', $city);
     }
 
-    // Custom Methods
-
-
-
-
 }

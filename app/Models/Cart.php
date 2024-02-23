@@ -36,12 +36,20 @@ class Cart extends Model
      */
     public function addProduct(Product $product, $quantity = 1)
     {
-        // Implement logic to add a product to the cart
-        return CartItem::create([
-            'cart_id' => $this->id,
-            'product_id' => $product->id,
-            'quantity' => $quantity,
-        ]);
+        // Check if the product is already in the cart
+        $existingItem = $this->items()->where('product_id', $product->id)->first();
+
+        if ($existingItem) {
+            // If the product is already in the cart, update the quantity
+            $existingItem->update(['quantity' => $existingItem->quantity + $quantity]);
+            return $existingItem;
+        } else {
+            // If the product is not in the cart, create a new cart item
+            return $this->items()->create([
+                'product_id' => $product->id,
+                'quantity' => $quantity,
+            ]);
+        }
     }
 
     /**
