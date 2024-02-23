@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Wishlist;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -9,15 +10,13 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class WishlistFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
-    public function definition(): array
+    protected $model = Wishlist::class;
+
+    public function definition()
     {
         return [
-            //
+            'user_id' => \App\Models\User::factory(),
+            'product_id' => \App\Models\Product::factory(),
         ];
     }
 }

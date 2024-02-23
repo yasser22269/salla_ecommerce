@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Payment;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -9,15 +10,15 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class PaymentFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
-    public function definition(): array
+    protected $model = Payment::class;
+
+    public function definition()
     {
         return [
-            //
+            'user_id' => \App\Models\User::factory(),
+            'order_id' => \App\Models\Order::factory(),
+            'amount' => $this->faker->randomFloat(2, 10, 100),
+            'payment_status' => $this->faker->randomElement(['pending', 'completed']),
         ];
     }
 }
