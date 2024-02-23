@@ -11,7 +11,7 @@ class AnalyticsRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,10 @@ class AnalyticsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'page_views' => 'required|integer|min:0',
+            'unique_visitors' => 'required|integer|min:0',
+            'sales' => 'required|numeric|min:0',
+            'conversion_rate' => 'required|numeric|min:0|max:1',
         ];
     }
 }
