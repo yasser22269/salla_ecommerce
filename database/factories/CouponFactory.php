@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Coupon;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,8 +17,10 @@ class CouponFactory extends Factory
     {
         return [
             'code' => $this->faker->unique()->word,
-            'discount_percentage' => $this->faker->randomFloat(2, 5, 30),
-            'validity_period' => $this->faker->dateTimeBetween('now', '+1 year'),
+            'type' => $this->faker->randomElement(['fixed_amount', 'percentage', 'free_shipping']),
+            'discount' => $this->faker->randomFloat(2, 5, 30),
+            'valid_from' => Carbon::now()->addDays(rand(1, 30)),
+            'valid_to' => Carbon::now()->addDays(rand(31, 365))
         ];
     }
 }

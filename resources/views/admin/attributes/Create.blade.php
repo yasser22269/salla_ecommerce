@@ -27,7 +27,7 @@
                 <div class="form-body">
                   <h4 class="form-section">attribute Info</h4>
 
-{{-- 
+{{--
                   <div class="row">
 
                     <div class="col-md-6">
@@ -42,19 +42,17 @@
                   </div> --}}
                   <div class="row">
 
-                    @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
 
                       <div class="col-md-6">
                         <div class="form-group">
-                          <label for="projectinput2">Name:{{  $localeCode }}</label>
-                          <input type="text" id="projectinput2" class="form-control" placeholder="{{  $localeCode }}Name" name="{{  $localeCode }}[name]">
+                          <label for="projectinput2">Name</label>
+                          <input type="text" id="projectinput2" class="form-control" placeholder="Name" name="name">
                         </div>
-                          @error("$localeCode.name")
+                          @error("name")
                           <span class="text-danger"> {{$message}}</span>
                           @enderror
                       </div>
 
-                    @endforeach
 
                   </div>
 

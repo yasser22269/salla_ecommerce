@@ -109,12 +109,12 @@
                           <select  name="parent_id" class="form-control">
                               @if($categories  && $categories -> count() > 0)
                                   <!-- index.blade.php -->
-                                  @foreach ($categories as $category)
-                                      <option value="{{ $category['id'] }}" >{{ $category['name'] }}</option>
+                                  @foreach ($categories as $item)
+                                      <option value="{{ $item['id'] }}" {{ $item['id']  == $category->parent_id ? 'selected':"" }} >{{ $item['name'] }}</option>
                                       @if (count($category['children']) > 0)
                                           @include('admin.categories.partials.category', [
-                                                 'categories' => $category['children'],
-                                                 'category_name' => $category->name
+                                                 'categories' => $item['children'],
+                                                 'category_name' => $item->name
                                                                  ])
                                       @endif
                                   @endforeach

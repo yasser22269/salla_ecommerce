@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Attribute;
+use App\Models\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,7 +20,9 @@ class OptionFactory extends Factory
     {
         return [
             'attribute_id' => Attribute::inRandomOrder()->first()->id,
-            'value' => $this->faker->word,
+            'product_id' => Product::inRandomOrder()->first()->id,
+            'price' => $this->faker->numberBetween(100,500),
+            'name' => $this->faker->word,
         ];
     }
 }

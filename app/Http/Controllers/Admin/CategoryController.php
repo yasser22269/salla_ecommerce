@@ -116,7 +116,7 @@ class CategoryController extends Controller
     {
         $category = Category::findOrFail($id);
 
-        $categories = Category::where('id','!=',$id)->with('children.children')->whereNull('parent_id')->get();
+        $categories = Category::with('children.children')->whereNull('parent_id')->get();
         $categoriesParent = Category::select('id')->Parent()->get();
 
 
@@ -132,8 +132,7 @@ class CategoryController extends Controller
      */
     public function update(CategoryRequest $request, $id)
     {
-//        try {
-
+        try {
             DB::beginTransaction();
             $Category = Category::find($id);
             if (isset($request->status) && $request->status == 1)
@@ -155,10 +154,10 @@ class CategoryController extends Controller
 
             DB::commit();
             return redirect()->route('Category.index')->with(['success' => 'تم التعديل بنجاح']);
-//        } catch (\Exception $ex) {
-//            DB::rollback();
-//            return redirect()->back()->with(['error' => 'حدث خطا ما برجاء المحاوله لاحقا']);
-//        }
+        } catch (\Exception $ex) {
+            DB::rollback();
+            return redirect()->back()->with(['error' => 'حدث خطا ما برجاء المحاوله لاحقا']);
+        }
     }
 
 }

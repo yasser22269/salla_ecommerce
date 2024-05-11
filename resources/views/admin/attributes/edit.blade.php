@@ -44,21 +44,19 @@
 
                   <div class="row">
 
-                    @foreach($Attribute->translations as $AttributeName)
 
 
                       <div class="col-md-6">
                         <div class="form-group">
-                          <label for="projectinput2">Name:{{  $AttributeName->locale }}</label>
-                          <input type="text" id="projectinput2" class="form-control" placeholder="{{  $AttributeName->locale }}Name" name="{{  $AttributeName->locale }}[name]" value="{{  $AttributeName->name }}">
+                          <label for="projectinput2">Name</label>
+                          <input type="text" id="projectinput2" class="form-control" placeholder="Name" name="name" value="{{  $Attribute->name }}">
                         </div>
-                          @error("$AttributeName->locale.name")
+                          @error("name")
                           <span class="text-danger"> {{$message}}</span>
                           @enderror
                       </div>
 
 
-                    @endforeach
 
                   </div>
 

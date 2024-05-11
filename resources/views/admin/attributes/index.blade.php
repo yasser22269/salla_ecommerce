@@ -29,51 +29,47 @@
 
 <div class="row" id="header-styling">
     <div class="col-12">
-      <div class="card">
+        <div class="card">
 
-        <div class="card-content collapse show">
-          <div class="table-responsive">
-            <table class="table">
-              <thead class="bg-success white">
-                <tr>
-                  <th> id</th>
-                  <th>Name</th>
-                  <th>Edit</th>
-                  <th>Delete</th>
-                </tr>
-              </thead>
-              <tbody>
-                  @foreach ($attributes as $index => $Attribute)
-
-
-                <tr>
-                  <td>{{ ($index++)+1 }}</td>
-                  <td>{{ $Attribute->name ?? "--" }}</td>
-                  <td>
-                  <a href="{{ route('Attributes.edit',$Attribute->id) }}">
-                        <button class="btn btn-info btn-sm round  box-shadow-2 px-1"type="button" > <i class="la la-edit la-sm"></i> Edit </button>
-                   </a>
-                  </td>
-                  <td>
-
-                     <form class="form" method="POST" action="{{ route('Attributes.destroy',$Attribute->id) }}">
-                      @csrf
-                      @method('DELETE')
-                  {{--  attributes  --}}
-                          <button class="btn btn-danger btn-sm  round  box-shadow-2 px-1"type="submit" ><i class="la la-remove la-sm"></i> DELETE </button>
-
-                      </form>
-                    </td>
-                </tr>
-                @endforeach
-              </tbody>
-            </table>
-          </div>
-
+            <div class="card-content collapse show">
+                <table class="table yajra-datatable mt-2" id="Attributes">
+                    <thead>
+                    <tr>
+                        <th>name</th>
+                        <th>action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
         </div>
-
-      </div>
-      {{ $attributes->links() }}
     </div>
-  </div>
+</div>
+@endsection
+@section('js')
+    <script>
+        $(document).ready( function () {
+
+            var table = $('#Attributes').DataTable({
+                processing: true,
+                serverSide: true,
+                responsive: true,
+                ordering : true,
+                ajax: "{{ route("Attribute.GetAttributes") }}",
+                columns: [
+                    // {data: 'id', name: 'id'},
+                    {data: 'name', name: 'name'},
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false,
+                    }
+                ],
+                dom: 'Bfrtip'
+            });
+
+        });
+    </script>
 @endsection

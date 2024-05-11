@@ -74,5 +74,8 @@ class Coupon extends Model
     {
         return !$this->isExpired() && $order->total > 0;
     }
+    public function getactive(){
+        return $this->validity_period < now() ? 'غير مفعل' : "مفعل";
+    }
 }
 

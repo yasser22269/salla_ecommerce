@@ -25,7 +25,7 @@
   <!-- END VENDOR CSS-->
   <!-- BEGIN MODERN CSS-->
   <link rel="stylesheet" type="text/css" href="{{asset('app-assets/'. getFolder() .'/app.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('app-assets/')}}vendors/css/tables/datatable/datatables.min.css">
+    <link rel="stylesheet" type="text/css" href="{{asset('app-assets/')}}/vendors/css/tables/datatable/datatables.min.css">
   <!-- END MODERN CSS-->
   <!-- BEGIN Page Level CSS-->
   <link rel="stylesheet" type="text/css" href="{{asset('app-assets/'. getFolder() .'/core/menu/menu-types/vertical-content-menu.css')}}">

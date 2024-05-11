@@ -25,10 +25,10 @@ class AttributeRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name' => 'required|unique:category_translations,name,'. $this->name,
+             'name' => 'required|unique:attributes,name,'. $this->id,
            // 'name' => 'required',
-            "ar.name" => 'required|string',
-            "en.name" => 'required|string',
+           // "ar.name" => 'required|string',
+           // "en.name" => 'required|string',
 
         ];
     }

@@ -10,6 +10,7 @@ use App\Models\Attribute;
 use App\Models\OptionTranslation;
 use App\Models\Product;
 use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\Facades\DataTables;
 
 class OptionController extends Controller
 {
@@ -21,9 +22,54 @@ class OptionController extends Controller
      */
     public function index()
     {
-        $Options = Option::paginate(PAGINATION_COUNT);
+        $Options = Option::with('product','attribute')->paginate(PAGINATION_COUNT);
         return view('Admin.Options.index', compact('Options'));
     }
+
+    public function GetOptions(){
+        $data = Option::with('product','attribute')->get();
+
+
+        if ($data->isEmpty()) {
+            return response()->json(['message' => 'No Options found.'], 404);
+        }
+
+        return DataTables::of($data)
+            ->addIndexColumn()
+            ->addColumn('name', function($row){
+                return $row->name;
+            })
+            ->addColumn('product', function($row){
+                return $row->product->name ?? "--";
+            })
+            ->addColumn('attribute', function($row){
+                return $row->attribute->name ?? "--";
+            })
+            ->addColumn('price', function($row){
+                return $row->price;
+            })
+            ->addColumn('action', function($row){
+                $btn = '
+                    <div style="display: flex;justify-content: flex-start;">
+                       <a href="'.route('Options.edit',$row->id).'" class="mr-1 btn btn-info btn-sm round  box-shadow-2 px-1">
+                                Edit
+                            </a>
+             <form class="form" method="POST" action="'. route('Options.destroy',$row->id) .'">
+                     '. csrf_field()  .'
+                     '. method_field('DELETE')  .'
+                          <button class="btn btn-danger btn-sm  round  box-shadow-2 px-1"type="submit" >
+                            DELETE
+                          </button>
+
+                      </form>
+                    </div>
+                ';
+                return $btn;
+            })
+            ->rawColumns(['action','name','price','product','attribute'])
+            ->make(true);
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -32,8 +78,8 @@ class OptionController extends Controller
      */
     public function create()
     {
-        $products = Product::translatedIn(app()->getLocale())->get();
-        $attrubutes = Attribute::translatedIn(app()->getLocale())->get();
+        $products = Product::get();
+        $attrubutes = Attribute::get();
         return view('Admin.Options.create', compact('attrubutes', 'products'));
     }
 
@@ -46,11 +92,7 @@ class OptionController extends Controller
     public function store(OptionRequest $request)
     {
         try {
-
             DB::beginTransaction();
-
-
-            //   return $request->except('_token');
             $Option =  Option::create($request->except('_token'));
 
             //save translations
@@ -62,7 +104,7 @@ class OptionController extends Controller
             return redirect()->route('Options.index')->with(['success' => 'تم ألاضافة بنجاح']);
         } catch (\Exception $ex) {
             DB::rollback();
-            return redirect()->route('Options.index')->with(['error' => 'حدث خطا ما برجاء المحاوله لاحقا']);
+            return redirect()->back()->with(['error' => 'حدث خطا ما برجاء المحاوله لاحقا']);
         }
     }
 
@@ -74,10 +116,10 @@ class OptionController extends Controller
      */
     public function edit($id)
     {
-        $Options = Option::findOrFail($id);
-        $products = Product::translatedIn(app()->getLocale())->get();
-        $attrubutes = Attribute::translatedIn(app()->getLocale())->get();
-        return view('Admin.Options.edit', compact("Options", 'attrubutes', 'products'));
+        $Option = Option::findOrFail($id);
+        $products = Product::get();
+        $attrubutes = Attribute::get();
+        return view('Admin.Options.edit', compact("Option", 'attrubutes', 'products'));
     }
 
     /**
@@ -111,26 +153,13 @@ class OptionController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Option  $Option
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy($id)
     {
         $Option = Option::find($id);
-
-
         if (!$Option)
             return redirect()->route('Options.index')->with(['error' => 'هذا الاوبشن غير موجود ']);
 
-        $OptionNames = OptionTranslation::where('option_id', $Option->id)->get();
-        if ($OptionNames->count() > 0) {
-            foreach ($OptionNames as  $OptionName) {
-                $OptionName->delete();
-            }
-        }
         $Option->delete();
         return redirect()->route('Options.index')->with(['success' => 'تم الحذف بنجاح']);
     }

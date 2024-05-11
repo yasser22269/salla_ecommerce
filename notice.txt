@@ -15,7 +15,7 @@ product_id (int, foreign key referencing products table)
 created_at (timestamp)
 updated_at (timestamp)
 
-3- users table:
+3- users table:                                                                   -- Done
 
 id (int, primary key)
 name (string)
@@ -26,7 +26,7 @@ vendor_id (int, foreign key referencing vendors table, nullable)
 created_at (timestamp)
 updated_at (timestamp)
 
-4- categories table:
+4- categories table:                                                                   -- Done
 
 id (int, primary key)
 name (string)
@@ -99,8 +99,10 @@ updated_at (timestamp)
 
 id (int, primary key)
 code (string)
-discount_percentage (decimal)
-validity_period (timestamp)
+discount (decimal)
+'type' (enum, ['fixed_amount', 'percentage', 'free_shipping']) ,default('fixed_amount');
+valid_from (timestamp)
+valid_to (timestamp)
 created_at (timestamp)
 updated_at (timestamp)
 
@@ -230,8 +232,7 @@ status (TinyInt, 1)
 created_at (timestamp)
 updated_at (timestamp)
 
-
-25-Attributes:
+25-Attributes:                                                                         -- Done
 id (int, primary key)
 name (string)
 status (TinyInt, 1)
@@ -239,10 +240,11 @@ created_at (timestamp)
 updated_at (timestamp)
 
 
-26-Options:
+26-Options:                                                                          -- Done
 id (int, primary key)
 attribute_id (int, foreign key referencing attributes table)
-value (string)
+price (number)
+product_id (int, foreign key referencing products table)
 status (TinyInt, 1)
 created_at (timestamp)
 updated_at (timestamp)

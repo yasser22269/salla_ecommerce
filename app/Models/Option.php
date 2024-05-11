@@ -10,8 +10,12 @@ class Option extends Model
 {
     use HasFactory;
     protected $guarded = [];
-    public function products()
+    public function product()
     {
-        return $this->belongsToMany(Product::class, 'product_options');
+        return $this->belongsTo(Product::class);
+    }
+    public function attribute()
+    {
+        return $this->belongsTo(Attribute::class);
     }
 }

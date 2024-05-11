@@ -17,7 +17,6 @@ class LoginController extends Controller
     public function postLogin(AdminLoginRequest $request)
     {
         $remember_token = $request->has('remember_token') ? true : false;
-
         if (auth()->guard('admin')->attempt(['email' => $request->input("email"), 'password' => $request->input("password")], $remember_token)) {
             return redirect()->route('Admin');
         }

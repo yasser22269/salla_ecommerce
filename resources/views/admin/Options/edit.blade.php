@@ -34,29 +34,27 @@
 
       <div class="tab-content px-1 pt-1">
         <div role="tabpanel" class="tab-pane active" id="tab11" aria-expanded="true" aria-labelledby="base-tab11">
-            <form class="form" method="POST" action="{{ route('Options.update',$Options->id) }}">
+            <form class="form" method="POST" action="{{ route('Options.update',$Option->id) }}">
                 @csrf
                 @method('put')
                 <div class="form-body">
                   <h4 class="form-section">General Option Info</h4>
-                  <input type="hidden"  name="id" value="{{ $Options->id }}">
+                  <input type="hidden"  name="id" value="{{ $Option->id }}">
                   <div class="row">
 
-                    @foreach($Options->translations as $OptionName)
 
 
                       <div class="col-md-6">
                         <div class="form-group">
-                          <label for="projectinput2">Name:{{  $OptionName->locale }}</label>
-                          <input type="text" id="projectinput2" class="form-control" placeholder="{{  $OptionName->locale }}Name" name="{{  $OptionName->locale }}[name]" value="{{  $OptionName->name }}">
+                          <label for="projectinput2">Name</label>
+                          <input type="text" id="projectinput2" class="form-control" placeholder="Name" name="name" value="{{  $Option->name }}">
                         </div>
-                          @error("$OptionName->locale.name")
+                          @error("name")
                           <span class="text-danger"> {{$message}}</span>
                           @enderror
                       </div>
 
 
-                    @endforeach
 
                   </div>
                   <div class="row">
@@ -64,12 +62,12 @@
 
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="projectinput1"> سعر  الاوبشن
+                            <label for="projectinput1">Price
                             </label>
                             <input type="number" id="price"
                                    class="form-control"
                                    placeholder="price"
-                                   value="{{ $Options->price }}"
+                                   value="{{ $Option->price }}"
                                    name="price">
                             @error("price")
                             <span class="text-danger">{{$message}}</span>
@@ -89,7 +87,7 @@
                 <div class="row" >
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="projectinput1"> اختر المنتج
+                            <label for="projectinput1">Product
                             </label>
                             <select name="product_id" class="form-control" >
                                 <optgroup label="من فضلك أختر القسم ">
@@ -97,7 +95,7 @@
                                     @if($products && $products -> count() > 0)
                                         @foreach($products as $product)
                                             <option
-                                            {{ ($Options->product_id == $product->id) ? "selected" : ''}}
+                                            {{ ($Option->product_id == $product->id) ? "selected" : ''}}
                                                 value="{{$product->id }}">{{$product->name}}</option>
                                         @endforeach
                                     @endif
@@ -110,7 +108,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="projectinput1"> اختر الصفة
+                            <label for="projectinput1">Attrubute
                             </label>
                             <select name="attribute_id" class="form-control" >
                                 <optgroup label=" اختر ألعلامات الدلالية ">
@@ -118,7 +116,7 @@
                                     @if($attrubutes && $attrubutes -> count() > 0)
                                         @foreach($attrubutes as $attribute)
                                             <option
-                                            {{ ($Options->attribute_id == $attribute->id) ? "selected" : ''}}
+                                            {{ ($Option->attribute_id == $attribute->id) ? "selected" : ''}}
 
                                                 value="{{$attribute->id }}">{{$attribute->name}}</option>
                                         @endforeach

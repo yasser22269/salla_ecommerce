@@ -33,16 +33,15 @@
 
                   <div class="row">
 
-                    @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
 
 
 
                       <div class="col-md-6">
                         <div class="form-group">
-                          <label for="projectinput2">اسم  الاوبشن:{{  $localeCode }}</label>
-                          <input type="text" id="projectinput2" class="form-control" placeholder="{{  $localeCode }}Name" name="{{  $localeCode }}[name]">
+                          <label for="projectinput2">Name</label>
+                          <input type="text" id="projectinput2" class="form-control" placeholder="Name" name="name">
                         </div>
-                          @error("$localeCode.name")
+                          @error("name")
                           <span class="text-danger"> {{$message}}</span>
                           @enderror
                       </div>
@@ -50,7 +49,6 @@
 
 
 
-                    @endforeach
 
                   </div>
 
@@ -58,11 +56,11 @@
 
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="projectinput1"> سعر  الاوبشن
+                            <label for="projectinput1">Price
                             </label>
                             <input type="number" id="price"
                                    class="form-control"
-                                   placeholder="  "
+                                   placeholder="Price"
                                    value="{{ old('price') }}"
                                    name="price">
                             @error("price")
@@ -77,7 +75,7 @@
                 <div class="row" >
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="projectinput1"> اختر المنتج
+                            <label for="projectinput1"> Product
                             </label>
                             <select name="product_id" class="form-control">
                                 <optgroup label="من فضلك أختر القسم ">
@@ -97,7 +95,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="projectinput1"> اختر الصفة
+                            <label for="projectinput1">Attrubute
                             </label>
                             <select name="attribute_id" class="form-control" >
                                 <optgroup label=" اختر ألعلامات الدلالية ">
