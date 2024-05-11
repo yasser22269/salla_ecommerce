@@ -14,8 +14,13 @@ class CategoryFactory extends Factory
 
     public function definition()
     {
+       $is_parent = $this->faker->numberBetween(0,1);
         return [
             'name' => $this->faker->word,
+            "is_parent" => $this->faker->numberBetween(0,1),
+            "parent_id" => ($is_parent ? null : \App\Models\Category::factory()),
         ];
     }
 }
+
+

@@ -60,7 +60,6 @@ class Coupon extends Model
      */
     public static function isValidCodeFormat($code)
     {
-        // Implement your coupon code validation logic here
         // Example: Coupon code must be alphanumeric and have a specific length
         return preg_match('/^[a-zA-Z0-9]{8}$/', $code) === 1;
     }

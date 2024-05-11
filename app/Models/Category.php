@@ -10,9 +10,7 @@ class Category extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'name',
-    ];
+    protected $guarded = [];
 
     // Relationships
     public function products()
@@ -63,6 +61,27 @@ class Category extends Model
     public function hasProducts()
     {
         return $this->getProductCount() > 0;
+    }
+
+
+    public function getactive(){
+        return $this->status ==0 ? 'غير مفعل' : "مفعل";
+    }
+
+    public function Parent(){
+        return $this->belongsTo(self::class,'parent_id');
+    }
+
+
+
+    public  function scopeParent($query){
+        return $query->whereNull('parent_id');
+    }
+
+    //get all childrens=
+
+    public function children(){
+        return $this->hasMany(Self::class,'parent_id','id');
     }
 }
 

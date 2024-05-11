@@ -11,7 +11,7 @@ class FAQRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,8 @@ class FAQRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'question' => 'required|string|max:255',
+            'answer' => 'required|string',
         ];
     }
 }

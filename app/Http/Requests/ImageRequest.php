@@ -11,7 +11,7 @@ class ImageRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,10 @@ class ImageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'filename' => 'required|string',
+            'caption' => 'nullable|string',
+            'path' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];
     }
 }
