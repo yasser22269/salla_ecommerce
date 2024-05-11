@@ -79,8 +79,14 @@ class User extends Authenticatable
     }
 
     // Example: Check if the user is an admin
-    public function isAdmin()
+    public function isVendor()
     {
-        return $this->role === 'admin';
+        return $this->role === 'vendor';
+    }
+
+    // Example: Check if the user is an admin
+    public function isCostomer()
+    {
+        return $this->role === 'customer';
     }
 }

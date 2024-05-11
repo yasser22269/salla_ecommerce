@@ -26,22 +26,29 @@ vendor_id (int, foreign key referencing vendors table, nullable)
 created_at (timestamp)
 updated_at (timestamp)
 
-4- products table:
+4- categories table:
+
+id (int, primary key)
+name (string)
+photo (string)
+is_parent (TinyInt)
+parent_id (int, foreign key referencing categories table , nullable)
+status (TinyInt , 1)
+created_at (timestamp)
+updated_at (timestamp)
+
+5- products table:
 
 id (int, primary key)
 name (string)
 description (text)
 price (decimal)
 quantity_available (int)
+category_id (int, foreign key referencing categories table)
+status (TinyInt , 1)
 created_at (timestamp)
 updated_at (timestamp)
 
-5- categories table:
-
-id (int, primary key)
-name (string)
-created_at (timestamp)
-updated_at (timestamp)
 
 6- orders table:
 
@@ -145,16 +152,8 @@ status (string)
 created_at (timestamp)
 updated_at (timestamp)
 
-17-returnProducts table:
 
-id (int, primary key)
-order_id (int, foreign key referencing orders table)
-reason (text)
-status (string)
-created_at (timestamp)
-updated_at (timestamp)
-
-18-analytics table:
+17-analytics table:
 
 id (int, primary key)
 page_views (int)
@@ -164,7 +163,7 @@ conversion_rate (float)
 created_at (timestamp)
 updated_at (timestamp)
 
-19-discounts table:
+18-discounts table:
 
 id (int, primary key)
 product_id (int, foreign key referencing products table)
@@ -174,7 +173,7 @@ end_date (timestamp)
 created_at (timestamp)
 updated_at (timestamp)
 
-20-subscriptions table:
+19-subscriptions table:
 
 id (int, primary key)
 user_id (int, foreign key referencing users table)
@@ -184,7 +183,7 @@ subscription_status (string)
 created_at (timestamp)
 updated_at (timestamp)
 
-21-faqs table:
+20-faqs table:
 
 id (int, primary key)
 question (text)
@@ -192,7 +191,7 @@ answer (text)
 created_at (timestamp)
 updated_at (timestamp)
 
-22- OrderItem table :
+21- OrderItem table :
 
 id (int, primary key)
 order_id (int, foreign key referencing orders table)
@@ -203,3 +202,49 @@ quantity (integer)
 subtotal (decimal)
 created_at (timestamp)
 updated_at (timestamp)
+
+
+22- Settings:
+id (int, primary key)
+key (string, unique)
+value (text)
+created_at (timestamp)
+updated_at (timestamp)
+
+
+23-Invoices:
+id (int, primary key)
+order_id (int, foreign key referencing orders table)
+invoice_number (string)
+total_amount (decimal)
+created_at (timestamp)
+updated_at (timestamp)
+
+
+24-Banners:
+id (int, primary key)
+title (string)
+image (string)
+description (text)
+status (TinyInt, 1)
+created_at (timestamp)
+updated_at (timestamp)
+
+
+25-Attributes:
+id (int, primary key)
+name (string)
+status (TinyInt, 1)
+created_at (timestamp)
+updated_at (timestamp)
+
+
+26-Options:
+id (int, primary key)
+attribute_id (int, foreign key referencing attributes table)
+value (string)
+status (TinyInt, 1)
+created_at (timestamp)
+updated_at (timestamp)
+
+

@@ -9,12 +9,7 @@ class Product extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'name',
-        'description',
-        'price',
-        'quantity_available',
-    ];
+    protected $guarded = [];
 
     // Relationships
     public function categories()
@@ -45,6 +40,12 @@ class Product extends Model
     public function orderItems()
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+
+    public function options()
+    {
+        return $this->belongsToMany(Option::class, 'product_options');
     }
 
     // Custom Methods

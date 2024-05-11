@@ -35,10 +35,6 @@ class Order extends Model
         return $this->hasOne(Shipping::class);
     }
 
-    public function returnProducts()
-    {
-        return $this->hasMany(ReturnProduct::class);
-    }
 
     // Custom Methods
 
@@ -102,5 +98,4 @@ class Order extends Model
         return $query->where('status', $status);
     }
 
-    // You can add more methods or relationships based on your specific needs.
 }

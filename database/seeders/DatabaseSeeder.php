@@ -15,10 +15,14 @@ class DatabaseSeeder extends Seeder
     {
         // Call seeders for each model
         $this->call([
+            AdminSeeder::class,
             VendorSeeder::class,
-            ProductSeeder::class,
-            VendorProductSeeder::class,
             CategorySeeder::class,
+            ProductSeeder::class,
+            AttributeSeeder::class,
+            OptionSeeder::class,
+            ProductOptionSeeder::class,
+            VendorProductSeeder::class,
             OrderSeeder::class,
             OrderItemSeeder::class,
             CartSeeder::class,
@@ -31,7 +35,6 @@ class DatabaseSeeder extends Seeder
             ImageSeeder::class,
             WishlistSeeder::class,
             NotificationSeeder::class,
-            ReturnProductSeeder::class,
             AnalyticsSeeder::class,
             DiscountSeeder::class,
             SubscriptionSeeder::class,

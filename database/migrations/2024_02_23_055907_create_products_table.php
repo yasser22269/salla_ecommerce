@@ -17,6 +17,8 @@ return new class extends Migration
             $table->text('description');
             $table->decimal('price', 8, 2);
             $table->integer('quantity_available');
+            $table->foreignId('category_id')->constrained('categories');
+            $table->tinyInteger('status')->default(1);
             $table->timestamps();
         });
     }
