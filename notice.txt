@@ -232,7 +232,6 @@ status (TinyInt, 1)
 created_at (timestamp)
 updated_at (timestamp)
 
-
 25-Attributes:                                                                         -- Done
 id (int, primary key)
 name (string)
