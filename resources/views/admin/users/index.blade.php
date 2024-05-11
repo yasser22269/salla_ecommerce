@@ -36,6 +36,7 @@
                 <tr>
                     <th>name</th>
                     <th>email</th>
+                    <th>Role</th>
                     <th>action</th>
                 </tr>
                 </thead>
@@ -63,6 +64,7 @@
                     // {data: 'id', name: 'id'},
                     {data: 'name', name: 'name'},
                     {data: 'email', name: 'email'},
+                    {data: 'role', name: 'role'},
                     {
                         data: 'action',
                         name: 'action',

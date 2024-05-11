@@ -1,8 +1,14 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\AttributeController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ContactUsController;
+use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\LoginController;
+use App\Http\Controllers\Admin\OptionController;
+use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,18 +34,11 @@ Route::group(['middleware' => 'auth:admin', 'prefix' => 'Admin'], function () {
     // ------------------------------End Categories--------------------------------------------
 
 
-    // ------------------------------Start Tags--------------------------------------------
-
-    Route::resource('Tag', 'TagController');
-
-    // ------------------------------End Tags--------------------------------------------
-
-
     // ------------------------------Start Settings--------------------------------------------
 
     //  Route::resource('Settings', 'SettingController');
-    Route::get('shipping-methods/{type}', 'SettingController@editShippingMethods')->name('edit.shippings.methods');
-    Route::put('shipping-methods/{id}', 'SettingController@updateShippingMethods')->name('update.shippings.methods');
+   // Route::get('shipping-methods/{type}', 'SettingController@editShippingMethods')->name('edit.shippings.methods');
+   // Route::put('shipping-methods/{id}', 'SettingController@updateShippingMethods')->name('update.shippings.methods');
 
     // ------------------------------End Settings--------------------------------------------
 
@@ -54,8 +53,8 @@ Route::group(['middleware' => 'auth:admin', 'prefix' => 'Admin'], function () {
 
     // ------------------------------Start profile--------------------------------------------
 
-    Route::get('profile', 'AdminController@profile')->name('admin.profile');
-    Route::put('profile/{id}', 'AdminController@updateprofile')->name('admin.update.profile');
+    Route::get('profile', [AdminController::class,'profile'])->name('admin.profile');
+    Route::put('profile/{id}', [AdminController::class,'updateprofile'])->name('admin.update.profile');
 
     // ------------------------------End profile--------------------------------------------
 
@@ -63,22 +62,22 @@ Route::group(['middleware' => 'auth:admin', 'prefix' => 'Admin'], function () {
 
     // ------------------------------Start Products--------------------------------------------
 
-    Route::resource('Products', 'ProductController');
-    Route::put('Products/Priceupdate/{id}', 'ProductController@Priceupdate')->name('Products.Priceupdate');
-    Route::post('Products/stockupdate/{id}', 'ProductController@stockupdate')->name('Products.stockupdate');
+    Route::resource('Products', ProductController::class);
+  //  Route::put('Products/Priceupdate/{id}', 'ProductController@Priceupdate')->name('Products.Priceupdate');
+  //  Route::post('Products/stockupdate/{id}', 'ProductController@stockupdate')->name('Products.stockupdate');
 
-    Route::post('Products/imageupdate', 'ProductController@imageupdate')->name('Products.imageupdate');
-    Route::post('Products/imageupdate/{id}', 'ProductController@imageupdateDB')->name('Products.imageupdate.db');
-    Route::post('Products/imagedelete', 'ProductController@imagedelete')
-        ->name('admin.products.images.delete');
+  //  Route::post('Products/imageupdate', 'ProductController@imageupdate')->name('Products.imageupdate');
+  //  Route::post('Products/imageupdate/{id}', 'ProductController@imageupdateDB')->name('Products.imageupdate.db');
+ //   Route::post('Products/imagedelete', 'ProductController@imagedelete')
+   //     ->name('admin.products.images.delete');
 
-    Route::post('Products/imagedelete/{id}', 'ProductController@imagedeleteId')
-        ->name('admin.products.imagedeleteId');
+  //  Route::post('Products/imagedelete/{id}', 'ProductController@imagedeleteId')
+  //      ->name('admin.products.imagedeleteId');
     // ------------------------------End Products--------------------------------------------
 
     // ------------------------------Start Attribute--------------------------------------------
 
-    Route::resource('Attributes', 'AttributeController');
+    Route::resource('Attributes', AttributeController::class);
 
     // ------------------------------End Attribute--------------------------------------------
 
@@ -87,44 +86,45 @@ Route::group(['middleware' => 'auth:admin', 'prefix' => 'Admin'], function () {
 
     // ------------------------------Start Options----------------------------------------
 
-    Route::resource('Options', 'OptionController');
+    Route::resource('Options', OptionController::class);
 
     // ------------------------------End Options-----------------------------------------
 
     // ------------------------------Start Contacts-----------------------------------------
 
-    Route::resource('Contact', 'ContactUs')->only(['index','destroy','show']);
+    Route::resource('Contact', ContactUsController::class)->only(['index','destroy','show']);
 
     // ------------------------------End Contacts--------------------------------------------
 
 
     // ------------------------------Start Contacts--------------------------------------
 
-    Route::resource('OrderAdmin', 'OrderController');
+    Route::resource('OrderAdmin', OrderController::class);
 
     // ------------------------------End Contacts--------------------------------------
 
     // ------------------------------Start Slider--------------------------------------------
 
-    Route::resource('Slider', 'SliderImagesController');
+   // Route::resource('Slider', 'SliderImagesController');
 
     // ------------------------------End Slider--------------------------------------------
 
     // ------------------------------Start Contacts--------------------------------
 
-    Route::resource('coupon', 'CouponController');
+    Route::resource('coupon', CouponController::class);
 
     // ------------------------------End Contacts----------------------------------
 });
 
-Route::group(['prefix' => 'Admin'], function () {
+Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
     //Get
-    Route::get('Users/GetUsers', [UserController::class, 'GetUsers'])->name('Users.GetUsers');
+    Route::get('Users/GetUsers', [UserController::class, 'getUsers'])->name('Users.GetUsers');
     Route::get('Category/GetCategories', [CategoryController::class, 'GetCategories'])->name('Category.GetCategories');
+    Route::get('Option/GetOptions', [OptionController::class, 'GetOptions'])->name('Option.GetOptions');
+    Route::get('Attribute/GetAttributes', [AttributeController::class, 'GetAttributes'])->name('Attribute.GetAttributes');
 });
 
 Route::group(['namespace' => 'Admin', 'middleware' => 'guest:admin', 'prefix' => 'Admin'], function () {
-
     Route::get('login', [LoginController::class , 'login'])->name('admin.login');
     Route::post('login',[LoginController::class , 'postLogin'])->name('admin.post.login');
 

@@ -38,7 +38,7 @@
                 <tr>
                   <th> id</th>
                   <th>code</th>
-                  <th>value</th>
+                  <th>Discount Percentage</th>
                   <th>status</th>
                   <th>Edit</th>
                   <th>Delete</th>
@@ -51,7 +51,7 @@
                 <tr>
                   <td>{{ ($index++)+1 }}</td>
                   <td>{{ $coupon->code  }}</td>
-                  <td>{{ $coupon->value  }}</td>
+                  <td>{{ $coupon->discount  }} %</td>
                   <td>{{ $coupon->getactive() }}</td>
                   <td>
                   <a href="{{ route('coupon.edit',$coupon->id) }}">

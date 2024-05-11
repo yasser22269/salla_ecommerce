@@ -21,7 +21,8 @@ class UserController extends Controller
         return view('Admin.users.index', compact('Users'));
     }
 
-    public function GetUsers(){
+    public function getUsers()
+    {
         $data = User::all();
 
         if ($data->isEmpty()) {
@@ -35,6 +36,9 @@ class UserController extends Controller
             })
             ->addColumn('email', function($row){
                 return $row->email;
+            })
+            ->addColumn('role', function($row){
+                return $row->role;
             })
             ->addColumn('action', function($row){
                 $btn = '
@@ -54,7 +58,7 @@ class UserController extends Controller
                 ';
                 return $btn;
             })
-            ->rawColumns(['email','action','name'])
+            ->rawColumns(['email','action','role','name'])
             ->make(true);
     }
 

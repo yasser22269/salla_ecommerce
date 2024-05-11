@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ContactUS as Contactuss;
 use Illuminate\Http\Request;
 
-class ContactUs extends Controller
+class ContactUsController extends Controller
 {
     /**
      * Display a listing of the resource.

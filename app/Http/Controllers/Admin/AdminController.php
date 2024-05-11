@@ -6,6 +6,9 @@ namespace App\Http\Controllers\Admin;
 use  App\Http\Controllers\Controller;
 use App\Http\Requests\AdminProfileRequest;
 use App\Models\Admin;
+use App\Models\ContactUS;
+use App\Models\Order;
+use App\Models\Product;
 use App\Models\User;
 
 class AdminController extends Controller
@@ -13,12 +16,11 @@ class AdminController extends Controller
 
     public function index()
     {
+        $produtctCount = Product::count();
+        $OrderCount = Order::count();
         $UserCount = User::count();
-        $PublisherCount = 0;
-        $BookCount = 0;
-        $ChildCount = 0;
-
-        return view('admin.index', compact('UserCount','PublisherCount','BookCount','ChildCount'));
+        $ContactUSCount = ContactUS::count();
+        return view('Admin.index', compact('produtctCount', 'OrderCount', 'UserCount', 'ContactUSCount'));
     }
 
 

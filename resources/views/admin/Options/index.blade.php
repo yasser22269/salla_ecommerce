@@ -29,59 +29,55 @@
 
 <div class="row" id="header-styling">
     <div class="col-12">
-      <div class="card">
+        <div class="card">
 
-        <div class="card-content collapse show">
-          <div class="table-responsive">
-            <table class="table">
-              <thead class="bg-success white">
-                <tr>
-                  <th> id</th>
-                  <th>Product Name</th>
-                  <th>attribute Name</th>
-                  <th>Name</th>
-                  <th>Price</th>
-                  <th>Edit</th>
-                  <th>Delete</th>
-                </tr>
-              </thead>
-              <tbody>
-                  @foreach ($Options as $index => $Option)
-
-
-                <tr>
-                  <td>{{ ($index++)+1 }}</td>
-                  <td>{{ $Option->product->name ?? "--" }}</td>
-                  <td>{{ $Option->attribute->name ?? "--" }}</td>
-                  <td>{{ $Option->name ?? "--" }}</td>
-                  <td>{{ $Option->price ?? '--' }}</td>
-                  <td>
-                  <a href="{{ route('Options.edit',$Option->id) }}">
-                        <button class="btn btn-info btn-sm round  box-shadow-2 px-1"type="button" > <i class="la la-edit la-sm"></i> Edit </button>
-                   </a>
-                  </td>
-                  <td>
-
-                     <form class="form" method="POST" action="{{ route('Options.destroy',$Option->id) }}">
-                      @csrf
-                      @method('DELETE')
-                  {{--  Options  --}}
-                          <button class="btn btn-danger btn-sm  round  box-shadow-2 px-1"type="submit" ><i class="la la-remove la-sm"></i> DELETE </button>
-
-                      </form>
-                    </td>
-                </tr>
-                @endforeach
-              </tbody>
-            </table>
-          </div>
-
+            <div class="card-content collapse show">
+                <table class="table yajra-datatable mt-2" id="GetAttributes">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Product Name</th>
+                        <th>attribute Name</th>
+                        <th>Price</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
         </div>
-
-      </div>
-      {{ $Options->links() }}
     </div>
-  </div>
+</div>
 @endsection
 
 
+@section('js')
+    <script>
+        $(document).ready( function () {
+
+            var table = $('#GetAttributes').DataTable({
+                processing: true,
+                serverSide: true,
+                responsive: true,
+                ordering : true,
+                ajax: "{{ route("Option.GetOptions") }}",
+                columns: [
+                    // {data: 'id', name: 'id'},
+                    {data: 'name', name: 'name'},
+                    {data: 'product', name: 'product'},
+                    {data: 'attribute', name: 'attribute'},
+                    {data: 'price', name: 'price'},
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false,
+                    }
+                ],
+                dom: 'Bfrtip'
+            });
+
+        });
+    </script>
+@endsection

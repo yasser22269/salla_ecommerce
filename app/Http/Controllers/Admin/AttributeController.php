@@ -8,46 +8,64 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\AttributeRequest;
 use App\Models\AttributeTranslation;
 use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\Facades\DataTables;
 
 class AttributeController extends Controller
 {
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $attributes = Attribute::paginate(PAGINATION_COUNT);
         return view('Admin.attributes.index', compact('attributes'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+    public function GetAttributes(){
+        $data = Attribute::get();
+
+        if ($data->isEmpty()) {
+            return response()->json(['message' => 'No Attributes found.'], 404);
+        }
+
+        return DataTables::of($data)
+            ->addIndexColumn()
+            ->addColumn('name', function($row){
+                return $row->name;
+            })
+            ->addColumn('action', function($row){
+                $btn = '
+                    <div style="display: flex;justify-content: flex-start;">
+                       <a href="'.route('Attributes.edit',$row->id).'" class="mr-1 btn btn-info btn-sm round  box-shadow-2 px-1">
+                                Edit
+                            </a>
+             <form class="form" method="POST" action="'. route('Attributes.destroy',$row->id) .'">
+                     '. csrf_field()  .'
+                     '. method_field('DELETE')  .'
+                          <button class="btn btn-danger btn-sm  round  box-shadow-2 px-1"type="submit" >
+                            DELETE
+                          </button>
+
+                      </form>
+                    </div>
+                ';
+                return $btn;
+            })
+            ->rawColumns(['action','name'])
+            ->make(true);
+    }
+
+
     public function create()
     {
-
         return view('Admin.attributes.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(AttributeRequest $request)
     {
         try {
 
             DB::beginTransaction();
-
-
-
             $Attribute =  Attribute::create($request->except('_token'));
 
             //save translations
@@ -63,25 +81,14 @@ class AttributeController extends Controller
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Attribute  $Attribute
-     * @return \Illuminate\Http\Response
-     */
+
     public function edit($id)
     {
         $Attribute = Attribute::findOrFail($id);
         return view('Admin.attributes.edit', compact("Attribute"));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Attribute  $Attribute
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(AttributeRequest $request, $id)
     {
         try {
@@ -105,26 +112,13 @@ class AttributeController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Attribute  $Attribute
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy($id)
     {
         $Attribute = Attribute::find($id);
-
-
         if (!$Attribute)
             return redirect()->route('Attributes.index')->with(['error' => 'هذا صفة غير موجود ']);
 
-        $AttributeNames = AttributeTranslation::where('Attribute_id', $Attribute->id)->get();
-        if ($AttributeNames->count() > 0) {
-            foreach ($AttributeNames as  $AttributeName) {
-                $AttributeName->delete();
-            }
-        }
         $Attribute->delete();
         return redirect()->route('Attributes.index')->with(['success' => 'تم الحذف بنجاح']);
     }
