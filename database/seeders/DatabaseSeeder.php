@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
     {
         // Call seeders for each model
         $this->call([
+            SettingSeeder::class,
             AdminSeeder::class,
             VendorSeeder::class,
             CategorySeeder::class,

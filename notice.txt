@@ -15,7 +15,7 @@ product_id (int, foreign key referencing products table)
 created_at (timestamp)
 updated_at (timestamp)
 
-3- users table:                                                                   -- Done
+3- users table:                                                                          -- Done
 
 id (int, primary key)
 name (string)
@@ -206,7 +206,7 @@ created_at (timestamp)
 updated_at (timestamp)
 
 
-22- Settings:
+22- Settings:                                                                         -- Done
 id (int, primary key)
 key (string, unique)
 value (text)
@@ -250,3 +250,26 @@ created_at (timestamp)
 updated_at (timestamp)
 
 
+27-ContactUS:
+id (int, primary key)
+Name (string)
+email (string)
+phone (string)
+massage (massage)
+created_at (timestamp)
+updated_at (timestamp)
+
+
+coupons
+products
+faqs
+Banners
+reviews
+images
+Invoices
+analytics
+notifications
+
+
+vendors
+vendor_products
