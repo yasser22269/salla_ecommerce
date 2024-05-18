@@ -1,6 +1,8 @@
 <?php
 
 
+use App\Models\Setting;
+
 define('PAGINATION_COUNT', 10);
 
 function getFolder()
@@ -35,4 +37,13 @@ function successResponse($data = null, $msg = "تم العملية بنجاح")
 function errorResponse($msg = "حدث خطأ أثناء تنفيذ العملية", $status = 500)
 {
     return jsonResponse(null, $status, $msg);
+}
+
+
+
+
+function get_setting($key, $default = null)
+{
+    $setting = Setting::where('key', $key)->first();
+    return $setting ? $setting->value : $default;
 }
