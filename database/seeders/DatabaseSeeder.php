@@ -36,7 +36,6 @@ class DatabaseSeeder extends Seeder
             WishlistSeeder::class,
             NotificationSeeder::class,
             AnalyticsSeeder::class,
-            DiscountSeeder::class,
             SubscriptionSeeder::class,
             FAQSeeder::class,
         ]);

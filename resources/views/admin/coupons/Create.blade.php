@@ -31,58 +31,84 @@
                 <div class="form-body">
                   <h4 class="form-section">coupon Info</h4>
 
-
-
                   <div class="row">
+                    <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="Code"> Code
+                        </label>
+                        <input type="text" id="Code"
+                               class="form-control"
+                               placeholder="  "
+                               value="{{ old('code') }}"
+                               name="code">
+                        @error("code")
+                        <span class="text-danger">{{$message}}</span>
+                        @enderror
+                    </div>
+                </div>
+                     <div class="col-md-6">
+                      <div class="form-group">
+                          <label for="Type"> Type
+                          </label>
+                          <select id="Type"
+                                  class="form-control"
+                                  name="type">
+                              <option value="fixed_amount">Fixed Amount</option>
+                              <option value="percentage">Percentage</option>
+                              <option value="free_shipping">Free Shipping</option>
+                          </select>
 
+                          @error("type")
+                          <span class="text-danger">{{$message}}</span>
+                          @enderror
+                      </div>
+                  </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="projectinput1"> Code
+                            <label for="discount"> value
                             </label>
-                            <input type="text" id="Code"
+                            <input type="number" id="discount"
                                    class="form-control"
                                    placeholder="  "
-                                   value="{{ old('code') }}"
-                                   name="code">
-                            @error("code")
+                                   value="{{ old('discount') }}"
+                                   name="discount">
+                            @error("discount")
                             <span class="text-danger">{{$message}}</span>
                             @enderror
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="projectinput1"> value
-                            </label>
-                            <input type="text" id="value"
-                                   class="form-control"
-                                   placeholder="  "
-                                   value="{{ old('value') }}"
-                                   name="value">
-                            @error("value")
-                            <span class="text-danger">{{$message}}</span>
-                            @enderror
-                        </div>
-                    </div>
+                      <div class="col-md-6">
+                          <div class="form-group">
+                              <label for="valid_from"> Date From
+                              </label>
+                              <input type="date" id="valid_from"
+                                     class="form-control"
+                                     value="{{ old('valid_from') }}"
+                                     name="valid_from">
+                              @error("valid_from")
+                              <span class="text-danger">{{$message}}</span>
+                              @enderror
+                          </div>
+                      </div>
+                      <div class="col-md-6">
+                          <div class="form-group">
+                              <label for="valid_to"> Date To
+                              </label>
+                              <input type="date" id="valid_to"
+                                     class="form-control"
+                                     value="{{ old('valid_to') }}"
+                                     name="valid_to">
+                              @error("valid_to")
+                              <span class="text-danger">{{$message}}</span>
+                              @enderror
+                          </div>
+                      </div>
                 </div>
-                <div class="col-md-12">
-                    <label for="switcheryColor4"
-                           class="card-title ">Status </label>
-                    <input type="checkbox" value="1"
-                           name="status"
-                           id="switcheryColor4"
-                           class="switchery" data-color="success"
-                           checked/>
-
-                    @error("status")
-                    <span class="text-danger">{{$message }}</span>
-                    @enderror
+                    <div class="form-actions">
+                      <button type="submit" class="btn btn-primary">
+                        <i class="la la-check-square-o"></i> Save
+                      </button>
                 </div>
-
-
-                <div class="form-actions">
-                  <button type="submit" class="btn btn-primary">
-                    <i class="la la-check-square-o"></i> Save
-                  </button>
                 </div>
               </form>
 

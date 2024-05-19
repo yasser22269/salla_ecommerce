@@ -26,8 +26,8 @@ class ProductSpecialImageRequest extends FormRequest
     {
         return [
             'product_id' => 'required|exists:products,id',
-            'document' => 'required|array|min:1',
-            'document.*' => 'required|string',
+            'filename' => 'required|array|min:1',
+            'filename.*' => 'required|mimes:jpg,jpeg,png',
         ];
     }
 }

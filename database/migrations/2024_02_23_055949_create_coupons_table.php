@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('code');
             $table->enum('type', ['fixed_amount', 'percentage', 'free_shipping'])->default('fixed_amount');
             $table->decimal('discount', 5, 2);
-            $table->dateTime('valid_from')->nullable();
-            $table->dateTime('valid_to')->nullable();
+            $table->date('valid_from')->nullable();
+            $table->date('valid_to')->nullable();
             $table->timestamps();
         });
     }

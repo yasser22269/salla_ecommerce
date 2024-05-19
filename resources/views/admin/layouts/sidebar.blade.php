@@ -3,7 +3,13 @@
   <div class="main-menu menu-static menu-light menu-accordion menu-shadow" data-scroll-to-active="true">
     <div class="main-menu-content">
       <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
-        <li class=" navigation-header">
+          <li class=" navigation-header">
+              <span data-i18n="nav.Users.pages">Admins</span><i class="la la-ellipsis-h ft-minus" data-toggle="tooltip" data-placement="right" data-original-title="Pages"></i>
+          </li>
+          <li class="nav-item  {{ Request::is('Admin/index*') ? 'active' : '' }}"><a href="{{ route('admin.Admins.index') }}"><i class="la la-user"></i><span class="menu-title" >Admins</span><span class="badge badge badge-info float-right"> {{ App\Models\Admin::count() }} </span></a>
+          </li>
+
+          <li class=" navigation-header">
             <span data-i18n="nav.Users.pages">Users</span><i class="la la-ellipsis-h ft-minus" data-toggle="tooltip" data-placement="right" data-original-title="Pages"></i>
           </li>
           <li class="nav-item  {{ Request::is('Admin/Users*') ? 'active' : '' }}"><a href="{{ route('Users.index') }}"><i class="la la-user"></i><span class="menu-title" >Users</span><span class="badge badge badge-info float-right"> {{ App\Models\User::count() }} </span></a>

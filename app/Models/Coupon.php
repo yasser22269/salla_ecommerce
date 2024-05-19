@@ -11,11 +11,7 @@ class Coupon extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'code',
-        'discount_percentage',
-        'expiry_date',
-    ];
+    protected $guarded = [];
 
     // Relationships
     public function orders()
@@ -23,11 +19,6 @@ class Coupon extends Model
         return $this->hasMany(Order::class);
     }
 
-    // Accessors
-    public function getFormattedExpiryDateAttribute()
-    {
-        return Carbon::parse($this->expiry_date)->toDateString();
-    }
 
     // Custom Methods
 
@@ -38,7 +29,7 @@ class Coupon extends Model
      */
     public function isExpired()
     {
-        return Carbon::now()->greaterThan($this->expiry_date);
+        return Carbon::now()->greaterThan($this->valid_to);
     }
 
     /**
@@ -74,8 +65,8 @@ class Coupon extends Model
     {
         return !$this->isExpired() && $order->total > 0;
     }
-    public function getactive(){
-        return $this->validity_period < now() ? 'غير مفعل' : "مفعل";
+    public function valid_to(){
+        return $this->valid_to < now() ? 'تم الانتهاء' : $this->valid_to;
     }
 }
 

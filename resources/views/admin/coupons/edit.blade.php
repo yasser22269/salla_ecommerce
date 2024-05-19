@@ -43,20 +43,6 @@
                   <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="projectinput1"> value
-                            </label>
-                            <input type="text" id="value"
-                                   class="form-control"
-                                   placeholder="value"
-                                   value="{{ $coupon->value }}"
-                                   name="value">
-                            @error("value")
-                            <span class="text-danger">{{$message}}</span>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
                             <label for="projectinput1"> code
                             </label>
                             <input type="text" id="code"
@@ -69,31 +55,70 @@
                             @enderror
                         </div>
                     </div>
+                      <div class="col-md-6">
+                          <div class="form-group">
+                              <label for="Type"> Type</label>
+                              <select id="Type"
+                                      class="form-control"
+                                      name="type">
+                                  <option value="fixed_amount" {{ $coupon->type == "fixed_amount" ? 'selected' : '' }} >Fixed Amount</option>
+                                  <option value="percentage"{{ $coupon->type == "percentage" ? 'selected' : '' }} >Percentage</option>
+                                  <option value="free_shipping"{{ $coupon->type == "free_shipping" ? 'selected' : '' }} >Free Shipping</option>
+                              </select>
+
+                              @error("type")
+                              <span class="text-danger">{{$message}}</span>
+                              @enderror
+                          </div>
+                      </div>
+                      <div class="col-md-6">
+                          <div class="form-group">
+                              <label for="discount"> value</label>
+                              <input type="number" id="discount"
+                                     class="form-control"
+                                     placeholder="  "
+                                     value="{{ $coupon->discount}}"
+                                     name="discount">
+                              @error("discount")
+                              <span class="text-danger">{{$message}}</span>
+                              @enderror
+                          </div>
+                      </div>
+                      <div class="col-md-6">
+                          <div class="form-group">
+                              <label for="valid_from"> Date From
+                              </label>
+                              <input type="date" id="valid_from"
+                                     class="form-control"
+                                     value="{{ $coupon->valid_from}}"
+                                     name="valid_from">
+                              @error("valid_from")
+                              <span class="text-danger">{{$message}}</span>
+                              @enderror
+                          </div>
+                      </div>
+                      <div class="col-md-6">
+                          <div class="form-group">
+                              <label for="valid_to"> Date To
+                              </label>
+                              <input type="date" id="valid_to"
+                                     class="form-control"
+                                     value="{{ $coupon->valid_to}}"
+                                     name="valid_to">
+                              @error("valid_to")
+                              <span class="text-danger">{{$message}}</span>
+                              @enderror
+                          </div>
+                      </div>
                   </div>
-
-                  <div class="col-md-12">
-                    <label for="switcheryColor4"
-                           class="card-title ">Status </label>
-                    <input type="checkbox" value="1"
-                           name="status"
-                            {{ $coupon->status == 1 ? 'checked': ""}}
-                           id="switcheryColor4"
-                           class="switchery" data-color="success"
-                           />
-
-                    @error("status")
-                    <span class="text-danger">{{$message }}</span>
-                    @enderror
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="la la-check-square-o"></i> Save
+                        </button>
+                    </div>
                 </div>
 
-
-
-                <div class="form-actions">
-                  <button type="submit" class="btn btn-primary">
-                    <i class="la la-check-square-o"></i> Save
-                  </button>
-                </div>
-              </form>
+            </form>
 
 
 
@@ -101,7 +126,6 @@
         </div>
       </div>
 
-      </div>
     </div>
   </div>
 

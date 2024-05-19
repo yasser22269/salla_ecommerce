@@ -39,19 +39,12 @@ class CouponController extends Controller
         try {
             // return $request;
             DB::beginTransaction();
-            if (isset($request->status) && $request->status == 1)
-                $request->request->add(['status' => 1]);
-            else
-                $request->request->add(['status' => 0]);
-
-            //   return $request->except('_token','type');
-            $coupon =  coupon::create($request->except('_token', 'type'));
-
+            $coupon =  coupon::create($request->except('_token'));
             DB::commit();
             return redirect()->route('coupon.index')->with(['success' => 'تم ألاضافة بنجاح']);
         } catch (\Exception $ex) {
             DB::rollback();
-            return redirect()->route('coupon.index')->with(['error' => 'حدث خطا ما برجاء المحاوله لاحقا']);
+            return redirect()->back()->with(['error' => 'حدث خطا ما برجاء المحاوله لاحقا']);
         }
     }
 
@@ -81,13 +74,7 @@ class CouponController extends Controller
 
             DB::beginTransaction();
             $coupon = coupon::find($id);
-            if (isset($request->status) && $request->status == 1)
-                $request->request->add(['status' => 1]);
-            else
-                $request->request->add(['status' => 0]);
-
             $coupon->update($request->all());
-
             DB::commit();
             return redirect()->route('coupon.index')->with(['success' => 'تم التعديل بنجاح']);
         } catch (\Exception $ex) {

@@ -48,24 +48,17 @@
                         </div>
                     </div>
                   <div class="row">
-
-                    @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
-
                       <div class="col-md-6">
                         <div class="form-group">
-                          <label for="projectinput2">Name:{{  $localeCode }}</label>
-                          <input type="text" id="projectinput2" class="form-control" placeholder="{{  $localeCode }}Name" name="{{  $localeCode }}[name]">
+                          <label for="projectinput2">Name:</label>
+                          <input type="text" id="projectinput2" class="form-control" placeholder="Name" name="name">
                         </div>
-                          @error("$localeCode.name")
+                          @error("name")
                           <span class="text-danger"> {{$message}}</span>
                           @enderror
                       </div>
 
-                    @endforeach
 
-                  </div>
-
-                  <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="projectinput1">Slug
@@ -80,52 +73,22 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-md-6"></div>
-                </div>
 
-
-                  <div class="row">
-
-                    @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
 
                       <div class="col-md-6">
                         <div class="form-group">
-                          <label for="projectinput2">description:{{  $localeCode }}</label>
-                        <textarea  name="{{  $localeCode }}[description]" id="description"
+                          <label for="projectinput2">description:</label>
+                        <textarea  name="description" id="description"
                         class="form-control"
-                        placeholder="{{  $localeCode }}:Description"
+                        placeholder="Description"
                          >{{old('description')}}</textarea>
-                          @error("$localeCode.description")
+                          @error("description")
                           <span class="text-danger"> {{$message}}</span>
                           @enderror
                         </div>
                       </div>
 
-                    @endforeach
 
-                  </div>
-                  <div class="row">
-
-                    @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
-
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="projectinput2">short description:{{  $localeCode }}</label>
-                        <textarea  name="{{  $localeCode }}[short_description]" id="description"
-                        class="form-control"
-                        placeholder="{{  $localeCode }}:short Description"
-                         >{{old('short_description')}}</textarea>
-                          @error("$localeCode.short_description")
-                          <span class="text-danger"> {{$message}}</span>
-                          @enderror
-                        </div>
-                      </div>
-
-                    @endforeach
-
-                  </div>
-
-                <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="projectinput1"> Price
@@ -141,14 +104,26 @@
                         </div>
                     </div>
 
-                </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="quantity_available"> Quantity Available (optional)
+                                </label>
+                                <input type="number" id="quantity_available"
+                                       class="form-control"
+                                       placeholder="  "
+                                       value="{{ old('quantity_available') }}"
+                                       name="quantity_available">
+                                @error("quantity_available")
+                                <span class="text-danger">{{$message}}</span>
+                                @enderror
+                            </div>
+                        </div>
 
-                <div class="row" >
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="form-group">
-                            <label for="projectinput1"> اختر القسم
+                            <label for="projectinput1"> Category
                             </label>
-                            <select name="categories[]" class="select2 form-control" multiple>
+                            <select name="category_id" class="form-control">
                                 <optgroup label="من فضلك أختر القسم ">
 
                                     @if($categories && $categories -> count() > 0)
@@ -159,53 +134,54 @@
                                     @endif
                                 </optgroup>
                             </select>
-                            @error('categories.0')
+                            @error('category_id')
                             <span class="text-danger"> {{$message}}</span>
                             @enderror
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="projectinput1"> اختر ألعلامات الدلالية
-                            </label>
-                            <select name="tags[]" class="select2 form-control" multiple>
-                                <optgroup label=" اختر ألعلامات الدلالية ">
 
-                                    @if($tags && $tags -> count() > 0)
-                                        @foreach($tags as $tag)
-                                            <option
-                                                value="{{$tag->id }}">{{$tag->name}}</option>
-                                        @endforeach
-                                    @endif
-                                </optgroup>
-                            </select>
-                            @error('tags')
-                            <span class="text-danger"> {{$message}}</span>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="projectinput1"> اختر ألماركة
-                            </label>
-                            <select name="brand_id" class="select2 form-control">
-                                <optgroup label="من فضلك أختر الماركة ">
+                      {{--                    <div class="col-md-4">--}}
+{{--                        <div class="form-group">--}}
+{{--                            <label for="projectinput1"> اختر ألعلامات الدلالية--}}
+{{--                            </label>--}}
+{{--                            <select name="tags[]" class="select2 form-control" multiple>--}}
+{{--                                <optgroup label=" اختر ألعلامات الدلالية ">--}}
 
-                                    @if($brands && $brands -> count() > 0)
-                                        @foreach($brands as $brand)
-                                            <option
-                                                value="{{$brand->id }}">{{$brand->name}}</option>
-                                        @endforeach
-                                    @endif
-                                </optgroup>
-                            </select>
-                            @error('brand_id')
-                            <span class="text-danger"> {{$message}}</span>
-                            @enderror
-                        </div>
-                    </div>
-                </div>
+{{--                                    @if($tags && $tags -> count() > 0)--}}
+{{--                                        @foreach($tags as $tag)--}}
+{{--                                            <option--}}
+{{--                                                value="{{$tag->id }}">{{$tag->name}}</option>--}}
+{{--                                        @endforeach--}}
+{{--                                    @endif--}}
+{{--                                </optgroup>--}}
+{{--                            </select>--}}
+{{--                            @error('tags')--}}
+{{--                            <span class="text-danger"> {{$message}}</span>--}}
+{{--                            @enderror--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                    <div class="col-md-4">--}}
+{{--                        <div class="form-group">--}}
+{{--                            <label for="projectinput1"> اختر ألماركة--}}
+{{--                            </label>--}}
+{{--                            <select name="brand_id" class="select2 form-control">--}}
+{{--                                <optgroup label="من فضلك أختر الماركة ">--}}
 
+{{--                                    @if($brands && $brands -> count() > 0)--}}
+{{--                                        @foreach($brands as $brand)--}}
+{{--                                            <option--}}
+{{--                                                value="{{$brand->id }}">{{$brand->name}}</option>--}}
+{{--                                        @endforeach--}}
+{{--                                    @endif--}}
+{{--                                </optgroup>--}}
+{{--                            </select>--}}
+{{--                            @error('brand_id')--}}
+{{--                            <span class="text-danger"> {{$message}}</span>--}}
+{{--                            @enderror--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+
+                  </div>
 
                 <div class="form-actions">
                   <button type="submit" class="btn btn-primary">

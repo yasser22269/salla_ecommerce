@@ -26,8 +26,23 @@ class CouponRequest extends FormRequest
     {
         return [
             "code" => 'required|string',
-            "value" => 'required|integer',
+            "type" => 'required',
+            "discount" => 'required',
+            "valid_from" => 'required|date|after_or_equal:today',
+            "valid_to" => 'required|date|after_or_equal:valid_from',
+        ];
+    }
 
+    /**
+     * Customize the error messages.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'valid_from.after_or_equal' => 'The Valid From date must be today or a future date.',
+            'valid_to.after_or_equal' => 'The Valid To date must be after or equal to Valid From date.',
         ];
     }
 }

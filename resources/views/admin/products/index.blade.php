@@ -29,58 +29,56 @@
 
 <div class="row" id="header-styling">
     <div class="col-12">
-      <div class="card">
+        <div class="card">
 
-        <div class="card-content collapse show">
-          <div class="table-responsive">
-            <table class="table">
-              <thead class="bg-success white">
-                <tr>
-                  <th> id</th>
-
-                  <th>Slug</th>
-                  <th>Name</th>
-                  <th>Active</th>
-                  <th>Edit</th>
-                  <th>Delete</th>
-                </tr>
-              </thead>
-              <tbody>
-                  @foreach ($products as $index => $product)
-
-
-                <tr>
-                  <td>{{ ($index++)+1 }}</td>
-                  <td>{{ $product->slug }}</td>
-                  <td>{{ $product->name ?? "--" }}</td>
-                  <td>{{ $product->getactive() }}</td>
-                  <td>
-                  <a href="{{ route('Products.edit',$product->id) }}">
-                        <button class="btn btn-info btn-sm round  box-shadow-2 px-1"type="button" > <i class="la la-edit la-sm"></i> Edit </button>
-                   </a>
-                  </td>
-                  <td>
-
-                     <form class="form" method="POST" action="{{ route('Products.destroy',$product->id) }}">
-                      @csrf
-                      @method('DELETE')
-                  {{--  products  --}}
-                          <button class="btn btn-danger btn-sm  round  box-shadow-2 px-1"type="submit" ><i class="la la-remove la-sm"></i> DELETE </button>
-
-                      </form>
-                    </td>
-                </tr>
-                @endforeach
-              </tbody>
-            </table>
-          </div>
-
+            <div class="card-content collapse show">
+                <table class="table yajra-datatable mt-2" id="GetProducts">
+                    <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Category</th>
+                        <th>Quantity Available</th>
+                        <th>Viewed</th>
+                        <th>Status</th>
+                        <th>action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
         </div>
-
-      </div>
-      {{ $products->links() }}
     </div>
-  </div>
+</div>
 @endsection
 
+@section('js')
+    <script>
+        $(document).ready( function () {
 
+            var table = $('#GetProducts').DataTable({
+                processing: true,
+                serverSide: true,
+                responsive: true,
+                ordering : true,
+                ajax: "{{ route("Product.GetProducts") }}",
+                columns: [
+                    {data: 'id', name: 'id'},
+                    {data: 'name', name: 'name'},
+                    {data: 'price', name: 'price'},
+                    {data: 'category', name: 'category'},
+                    {data: 'quantity_available', name: 'quantity_available'},
+                    {data: 'viewed', name: 'viewed'},
+                    {data: 'status', name: 'status'},
+                    {
+                        data: 'action',
+                        name: 'action',
+                    }
+                ],
+                dom: 'Bfrtip'
+            });
+        });
+    </script>
+@endsection
