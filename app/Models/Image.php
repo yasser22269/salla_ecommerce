@@ -9,11 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Image extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        'filename',
-        'caption',
-        'path',
-    ];
+    protected $guarded = [];
 
     // Relationships
     public function imageable()

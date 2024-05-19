@@ -86,11 +86,11 @@ class UserController extends Controller
     }
     public function destroy($id)
     {
-        $Brand = User::find($id);
-        if (!$Brand)
+        $User = User::find($id);
+        if (!$User)
             return redirect()->route('Users.index')->with(['error' => 'هذا العضو غير موجود ']);
 
-        $Brand->delete();
+        $User->delete();
         return redirect()->route('Users.index')->with(['success' => 'تم الحذف بنجاح']);
     }
 }

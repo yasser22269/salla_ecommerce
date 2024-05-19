@@ -26,6 +26,7 @@ vendor_id (int, foreign key referencing vendors table, nullable)
 created_at (timestamp)
 updated_at (timestamp)
 
+
 4- categories table:                                                                   -- Done
 
 id (int, primary key)
@@ -37,15 +38,17 @@ status (TinyInt , 1)
 created_at (timestamp)
 updated_at (timestamp)
 
-5- products table:
+5- products table:                                                                    -- Done
 
 id (int, primary key)
 name (string)
+slug (string)
 description (text)
 price (decimal)
 quantity_available (int)
 category_id (int, foreign key referencing categories table)
 status (TinyInt , 1)
+viewed (int)->default(0)
 created_at (timestamp)
 updated_at (timestamp)
 
@@ -95,7 +98,7 @@ comment (text)
 created_at (timestamp)
 updated_at (timestamp)
 
-11-coupons table:
+11-coupons table:                                                                         -- Done
 
 id (int, primary key)
 code (string)
@@ -126,7 +129,7 @@ shipping_status (string)
 created_at (timestamp)
 updated_at (timestamp)
 
-14-images table:
+14-images table:                                                                       -- Done
 
 id (int, primary key)
 filename (string)
@@ -165,13 +168,13 @@ conversion_rate (float)
 created_at (timestamp)
 updated_at (timestamp)
 
-18-discounts table:
-
+18-Offer:                                                                          -- Done
 id (int, primary key)
+special_price (decimal)
+special_price_type (string)
+special_price_start (date)
+special_price_end (date)
 product_id (int, foreign key referencing products table)
-discount_percentage (decimal)
-start_date (timestamp)
-end_date (timestamp)
 created_at (timestamp)
 updated_at (timestamp)
 
@@ -259,13 +262,17 @@ massage (massage)
 created_at (timestamp)
 updated_at (timestamp)
 
+28- Admin table:                                                                          -- Done
+id (int, primary key)
+name (string)
+email (string, unique)
+password (string)
+created_at (timestamp)
+updated_at (timestamp)
 
-coupons
-products
+
 faqs
 Banners
-reviews
-images
 Invoices
 analytics
 notifications

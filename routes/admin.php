@@ -56,6 +56,10 @@ Route::group(['middleware' => 'auth:admin', 'prefix' => 'Admin'], function () {
 
     Route::get('profile', [AdminController::class,'profile'])->name('admin.profile');
     Route::put('profile/{id}', [AdminController::class,'updateprofile'])->name('admin.update.profile');
+    Route::get('index', [AdminController::class,'indexAdmins'])->name('admin.Admins.index');
+    Route::get('index/create', [AdminController::class,'create'])->name('Admins.create');
+    Route::post('index/store', [AdminController::class,'store'])->name('Admins.store');
+    Route::delete('index/destroy/{id}', [AdminController::class,'destroy'])->name('admin.indexAdmins.destroy');
 
     // ------------------------------End profile--------------------------------------------
 
@@ -64,16 +68,15 @@ Route::group(['middleware' => 'auth:admin', 'prefix' => 'Admin'], function () {
     // ------------------------------Start Products--------------------------------------------
 
     Route::resource('Products', ProductController::class);
-  //  Route::put('Products/Priceupdate/{id}', 'ProductController@Priceupdate')->name('Products.Priceupdate');
+    Route::put('Products/Priceupdate/{id}', [ProductController::class,'Priceupdate'])->name('Products.Priceupdate');
   //  Route::post('Products/stockupdate/{id}', 'ProductController@stockupdate')->name('Products.stockupdate');
 
-  //  Route::post('Products/imageupdate', 'ProductController@imageupdate')->name('Products.imageupdate');
-  //  Route::post('Products/imageupdate/{id}', 'ProductController@imageupdateDB')->name('Products.imageupdate.db');
- //   Route::post('Products/imagedelete', 'ProductController@imagedelete')
-   //     ->name('admin.products.images.delete');
+    Route::post('Products/imageupdate/{id}', [ProductController::class,'imageupdateDB'])->name('Products.imageupdate.db');
+    Route::post('Products/imagedelete', [ProductController::class,'imagedelete'])
+        ->name('admin.products.images.delete');
 
-  //  Route::post('Products/imagedelete/{id}', 'ProductController@imagedeleteId')
-  //      ->name('admin.products.imagedeleteId');
+    Route::post('Products/imagedelete/{id}',[ProductController::class,'imagedeleteId'])
+        ->name('admin.products.imagedeleteId');
     // ------------------------------End Products--------------------------------------------
 
     // ------------------------------Start Attribute--------------------------------------------
@@ -120,9 +123,11 @@ Route::group(['middleware' => 'auth:admin', 'prefix' => 'Admin'], function () {
 Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
     //Get
     Route::get('Users/GetUsers', [UserController::class, 'getUsers'])->name('Users.GetUsers');
+    Route::get('Admins/GetAdmins', [AdminController::class, 'getAdmins'])->name('Admins.GetAdmins');
     Route::get('Category/GetCategories', [CategoryController::class, 'GetCategories'])->name('Category.GetCategories');
     Route::get('Option/GetOptions', [OptionController::class, 'GetOptions'])->name('Option.GetOptions');
     Route::get('Attribute/GetAttributes', [AttributeController::class, 'GetAttributes'])->name('Attribute.GetAttributes');
+    Route::get('Product/GetProducts', [ProductController::class, 'GetProducts'])->name('Product.GetProducts');
 });
 
 Route::group(['namespace' => 'Admin', 'middleware' => 'guest:admin', 'prefix' => 'Admin'], function () {

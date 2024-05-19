@@ -17,14 +17,14 @@ class Product extends Model
         return $this->belongsToMany(Category::class);
     }
 
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
     public function reviews()
     {
         return $this->hasMany(Review::class);
-    }
-
-    public function discounts()
-    {
-        return $this->hasMany(Discount::class);
     }
 
     public function wishlists()
@@ -41,7 +41,10 @@ class Product extends Model
     {
         return $this->hasMany(OrderItem::class);
     }
-
+    public function Offer()
+    {
+        return $this->hasOne(Offer::class,'product_id');
+    }
 
     public function options()
     {
@@ -107,5 +110,16 @@ class Product extends Model
     public function getTotalSalesQuantityAttribute()
     {
         return $this->orderItems->sum('quantity');
+    }
+
+    public function getPhotoAttribute($val)
+    {
+
+        return $val ? asset('images/products/'.$val) : '';
+    }
+
+    public function getActive()
+    {
+        return $this->status == 0 ? 'غير مفعل' : 'مفعل';
     }
 }

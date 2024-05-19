@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Image;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -20,6 +21,7 @@ use DateTime;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Yajra\DataTables\Facades\DataTables;
 
 class ProductController extends Controller
 {
@@ -30,28 +32,70 @@ class ProductController extends Controller
         return view('Admin.products.index', compact('products'));
     }
 
+    public function GetProducts(){
+        $data = Product::with('category')->get();
+
+        if ($data->isEmpty()) {
+            return response()->json(['message' => 'No Products found.'], 404);
+        }
+
+        return DataTables::of($data)
+            ->addIndexColumn()
+            ->addColumn('name', function($row){
+                return $row->name;
+            })
+            ->addColumn('price', function($row){
+                return $row->price;
+            })
+            ->addColumn('viewed', function($row){
+                return $row->viewed;
+            })
+            ->addColumn('category', function($row){
+                return $row->category->name;
+            })
+            ->addColumn('quantity_available', function($row){
+                return $row->quantity_available ?? '--';
+            })
+            ->addColumn('status', function($row){
+                return $row->getActive();
+            })
+            ->addColumn('action', function($row){
+                $btn = '
+                    <div style="display: flex;justify-content: flex-start;">
+                       <a href="'.route('Products.edit',$row->id).'" class="btn btn-info btn-sm round  box-shadow-2 px-1">
+                                Edit
+                        </a>
+
+                            <form class="form" method="POST" action="'. route('Products.destroy',$row->id) .'">
+                     '. csrf_field()  .'
+                     '. method_field('DELETE')  .'
+                          <button class="btn btn-danger btn-sm  round  box-shadow-2 px-1"type="submit" >
+                            DELETE
+                          </button>
+
+                      </form>
+                    </div>
+                ';
+                return $btn;
+            })
+            ->rawColumns(['price','viewed','category','status','quantity_available','action','name'])
+            ->make(true);
+    }
+
 
     public function create()
     {
-        // where('name','!=', null)->
-        $categories = Category::translatedIn(app()->getLocale())->get();
-        $tags = Tag::translatedIn(app()->getLocale())->get();
-        $brands = Brand::translatedIn(app()->getLocale())->get();
+        $categories = Category::get();
+//        $tags = Tag::translatedIn(app()->getLocale())->get();
+//        $brands = Brand::translatedIn(app()->getLocale())->get();
         // return $categories ;
-        return view('Admin.products.create', compact('categories', 'tags', 'brands'));
+        return view('Admin.products.create', compact('categories'));
     }
 
     public function store(ProductRequest $request)
     {
         try {
-
             DB::beginTransaction();
-
-
-            if (isset($request->is_active) && $request->is_active == 1)
-                $request->request->add(['is_active' => 1]);
-            else
-                $request->request->add(['is_active' => 0]);
 
             $request->request->add(['slug' => \Str::slug($request->slug)]);
 
@@ -59,30 +103,33 @@ class ProductController extends Controller
             $Product =  Product::create($request->except('_token', 'photo'));
 
             // Relations
-            $Product->category()->attach($request->categories);
-            $Product->tags()->attach($request->tags);
+            //$Product->category()->attach($request->categories);
+            //$Product->tags()->attach($request->tags);
 
-            ManageStock::create([
-                'qty' => Null,
-                'in_stock' => 0,
-                'sku' => Null,
-                'manage_stock' => 0,
-                'product_id' => $Product->id,
-            ]);
-            Offer::create([
-                'special_price_type' => Null,
-                'special_price_start' => Null,
-                'special_price_end' => Null,
-                'special_price' => Null,
-                'product_id' => $Product->id,
-            ]);
+//            ManageStock::create([
+//                'qty' => Null,
+//                'in_stock' => 0,
+//                'sku' => Null,
+//                'manage_stock' => 0,
+//                'product_id' => $Product->id,
+//            ]);
+//            Offer::create([
+//                'special_price_type' => Null,
+//                'special_price_start' => Null,
+//                'special_price_end' => Null,
+//                'special_price' => Null,
+//                'product_id' => $Product->id,
+//            ]);
 
 
 
             $fileName = uploadImage('products', $request->photo);
-            ImageProduct::create([
-                'product_id' => $Product->id,
-                'photo' => $fileName,
+            Image::create([
+                'imageable_id' => $Product->id,
+                'imageable_type' => Product::class,
+                'filename' => $fileName,
+                'path' => 'images/products',
+                "caption" => 'Product Image'
             ]);
 
             //save translations
@@ -103,30 +150,29 @@ class ProductController extends Controller
 
     public function edit($id)
     {
-        $Products = Product::with('category:id', 'tags:id')->findOrFail($id);
-        $offer = Offer::where('product_id', $Products->id)->first();
-        $ManageStock = ManageStock::where('product_id', $Products->id)->first();
+        $Product = Product::with('category:id','images')->findOrFail($id);
+        $offer = Offer::where('product_id', $Product->id)->first();
+//        $ManageStock = ManageStock::where('product_id', $Products->id)->first();
         //return $offers;
 
-        $categories = Category::translatedIn(app()->getLocale())->get();
-        $tags = Tag::translatedIn(app()->getLocale())->get();
-        $brands = Brand::translatedIn(app()->getLocale())->get();
+        $categories = Category::get();
+//        $tags = Tag::translatedIn(app()->getLocale())->get();
+//        $brands = Brand::translatedIn(app()->getLocale())->get();
 
-        //   return date_format($Products->special_price_start ,'Y-m-d') ;
-        return view('Admin.products.edit', compact('categories', 'tags', 'brands', "Products", 'offer', "ManageStock"));
+         //  return $Product ;
+        return view('Admin.products.edit', compact('categories', 'offer',"Product"));
     }
 
 
     public function update(ProductRequest $request, $id)
     {
         try {
-
             DB::beginTransaction();
             $Product = Product::find($id);
-            if (isset($request->is_active) && $request->is_active == 1)
-                $request->request->add(['is_active' => 1]);
+            if (isset($request->status) && $request->status == 1)
+                $request->request->add(['status' => 1]);
             else
-                $request->request->add(['is_active' => 0]);
+                $request->request->add(['status' => 0]);
 
             $request->request->add(['slug' => \Str::slug($request->slug)]);
 
@@ -134,8 +180,8 @@ class ProductController extends Controller
             $Product->update($request->except('_token'));
 
             // Relations
-            $Product->category()->sync($request->categories);
-            $Product->tags()->sync($request->tags);
+            //$Product->category()->sync($request->categories);
+            //$Product->tags()->sync($request->tags);
 
             //save translations
             // $Product->name = $request->name;
@@ -145,7 +191,7 @@ class ProductController extends Controller
 
 
             DB::commit();
-            return redirect()->route('Products.edit', $Product->id)->with(['success' => 'تم التعديل بنجاح']);
+            return redirect()->back()->with(['success' => 'تم التعديل بنجاح']);
         } catch (\Exception $ex) {
             DB::rollback();
             return redirect()->route('Products.edit', $Product->id)->with(['error' => 'حدث خطا ما برجاء المحاوله لاحقا']);
@@ -160,8 +206,11 @@ class ProductController extends Controller
             DB::beginTransaction();
 
             $offer = Offer::where('product_id', $id)->first();
-            //  return $offer;
-            $offer->update($request->except('_method', "_token"));
+            if($offer)
+                $offer->update($request->except('_method', "_token"));
+            else
+                Offer::create($request->except('_method', "_token"));
+
 
             DB::commit();
             return redirect()->route('Products.edit', $id)->with(['success' => 'تم التعديل بنجاح']);
@@ -171,54 +220,41 @@ class ProductController extends Controller
         }
     }
 
-    public function stockupdate(ProductSpecialStockRequest $request, $id)
-    {
-        try {
-            DB::beginTransaction();
-            $ManageStock = ManageStock::where('product_id', $id)->first();
-            $ManageStock->update($request->except('_method', "_token"));
-
-            DB::commit();
-            return redirect()->route('Products.edit', $id)->with(['success' => 'تم التعديل بنجاح']);
-        } catch (\Exception $ex) {
-            DB::rollback();
-            return redirect()->route('Products.edit', $id)->with(['error' => 'حدث خطا ما برجاء المحاوله لاحقا']);
-        }
-    }
-    // ProductSpecialStockRequest
-    //to save images to folder only
-    public function imageupdate(Request $request)
-    {
-
-        $file = $request->file('dzfile');
-        $filename = uploadImage('products', $file);
-
-        return response()->json([
-            'name' => $filename,
-            // 'original_name' => $file->getClientOriginalName(),
-        ]);
-    }
+//    public function stockupdate(ProductSpecialStockRequest $request, $id)
+//    {
+//        try {
+//            DB::beginTransaction();
+//            $ManageStock = ManageStock::where('product_id', $id)->first();
+//            $ManageStock->update($request->except('_method', "_token"));
+//
+//            DB::commit();
+//            return redirect()->route('Products.edit', $id)->with(['success' => 'تم التعديل بنجاح']);
+//        } catch (\Exception $ex) {
+//            DB::rollback();
+//            return redirect()->route('Products.edit', $id)->with(['error' => 'حدث خطا ما برجاء المحاوله لاحقا']);
+//        }
+//    }
 
     public function imageupdateDB(ProductSpecialImageRequest $request, $id)
     {
-
         try {
-            $Product = Product::find($id);
-
-            // save dropzone images
-            if ($request->has('document') && count($request->document) > 0) {
-                foreach ($request->document as $image) {
-                    // $fileName = "";
-                    // $fileName = uploadImage('products', $image);
-                    ImageProduct::create([
-                        'product_id' => $request->product_id,
-                        'photo' => $image,
+            if ($request->has('filename') && count($request->filename) > 0) {
+                foreach ($request->filename as $image) {
+                    $photo = uploadImage('products', $image);
+                    Image::create([
+                        'imageable_id' => $id,
+                        'imageable_type' => Product::class,
+                        'filename' => $photo,
+                        'path' => 'images/products',
+                        "caption" => 'Product Image'
                     ]);
                 }
             }
-
-            return redirect()->route('Products.edit', $Product->id)->with(['success' => 'تم التعديل بنجاح']);
+            return redirect()->back()->with(['success' => 'تم التعديل بنجاح']);
         } catch (\Exception $ex) {
+            DB::rollback();
+            return redirect()->back()->with(['error' => 'حدث خطا ما برجاء المحاوله لاحقا']);
+
         }
     }
 
@@ -226,39 +262,37 @@ class ProductController extends Controller
     public function imagedeleteId(Request $request, $id)
     {
 
-        $ImageProduct = ImageProduct::find($id);
-        //  return $ImageProduct;
+        $ImageProduct = Image::find($id);
 
-
-        $photo = str_replace('http://localhost:8000/', '',  $ImageProduct->photo);
-        if (File::exists($photo)) {
-            File::delete($photo);
+        if (File::exists($ImageProduct->path . "/" .$ImageProduct->filename)) {
+            File::delete($ImageProduct->path . "/" .$ImageProduct->filename);
         }
-
         $ImageProduct->delete();
-        return redirect()->route('Products.edit', $ImageProduct->product_id)->with(['success' => 'تم التعديل بنجاح']);
+        return redirect()->back()->with(['success' => 'تم الحذف بنجاح']);
     }
 
     public function destroy($id)
     {
         $Product = Product::find($id);
-        $ImageProducts = ImageProduct::where('product_id', $id)->get();
-        foreach ($ImageProducts as $ImageProduct) {
-            $photo = str_replace('http://localhost:8000/', '',  $ImageProduct->photo);
-            if (File::exists($photo)) {
-                File::delete($photo);
+        $images= $Product->images;
+        $Offer= $Product->Offer;
+        if ($Offer)
+            $Offer->delete();
+
+        if ($images){
+            foreach ($images as $image) {
+                if (File::exists($image->path . "/" . $image->filename)) {
+                    File::delete($image->path . "/" . $image->filename);
+                }
+                $image->delete();
             }
-            $ImageProduct->delete();
         }
+
+
         if (!$Product)
             return redirect()->route('Products.index')->with(['error' => 'هذا الماركة غير موجود ']);
 
-        $ProductNames = ProductTranslation::where('Product_id', $Product->id)->get();
-        if ($ProductNames->count() > 0) {
-            foreach ($ProductNames as  $ProductName) {
-                $ProductName->delete();
-            }
-        }
+
         $Product->delete();
         return redirect()->route('Products.index')->with(['success' => 'تم الحذف بنجاح']);
     }
